@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<script src="https://cdn.firebase.com/js/client/2.2.1/firebase.js"></script>
+<input id="name"placeholder="Name">
+<input id="msg" placeholder="Message">
+<script>
+	var db = new Firebase('https://wx0avxgfvy4.firebaseio-demo.com/');
+	var elm_name = document.getElementById('name');
+	var elm_msg = document.getElementById('msg');
+	
+	elm_msg.onkeypress = function(evt) {
+		if( evt.keyCode != 13 ) return;
+	   	db.push({
+			name: elm_name.value,
+			text: elm_msg.value,
+		});
+		elm_msg.value = "";
+	}
+
+	db.on('child_added', function(data) {
+		var msg = data.val();
+		var elm = document.createElement('p');
+		elm.innerHTML = msg.name + ": " + msg.text;
+		document.body.appendChild(elm);
+	});
+
+</script>
